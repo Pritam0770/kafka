@@ -4,7 +4,6 @@ Kafka Tutorial With 10 steps
 // 2nd we will connect via ssh and run commands as follows 
     sudo apt update
     sudo apt install python3
-    sudo apt install python3-pip
     sudo apt install python3-venv
     python3 -m venv venv1 (Create a virtual env with the name venv1)
     cd ~
