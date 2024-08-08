@@ -1,0 +1,92 @@
+Kafka Tutorial With 10 steps
+
+// 1st we choose an instance have good memory and processor and install ubuntu on it.
+// 2nd we will connect via ssh and run commands as follows 
+    sudo apt update
+    sudo apt install python3
+    sudo apt install python3-pip
+    sudo apt install python3-venv
+    python3 -m venv venv1 (Create a virtual env with the name venv1)
+    cd ~
+    source venv1/bin/activate (Activate the virtual env and use it)
+    wget Kafka-binary-website-link (Download the Kafka binary, go to this website "https://kafka.apache.org/downloads" and you will get the latest binary link copy that)
+    tar -xvf Kafka-binary-file.tar (Unzip the binary file)
+    cd Kafka-binary-file (go to kafka unzipped directory)
+
+
+// 3rd Some Insights about the directory:-
+    This directory contains all the kafka related things 
+    It has a directory as bin, and you will find .sh scripts residing inside this bin directory
+    What ever you need to do with kafka this is the place where you start
+    You will find something like kafka-server-start.sh or may be kafka-console-producer.sh
+    So these shell scripts are responsible to perform certain operations in kafka and they are self explanitory with their names
+    So you can think of this way as if the script name is kafka-server-start.sh then it will start the kafka server
+    and if the name is kafka-server-stop.sh then it will stop the server
+    Majority of these shell scripts takes a properties file which would contain certain configurations which are configurable via us
+    That config file resides inside the Kafka directory within it besides to bin directory we will find a directory named as config
+    within it we can find a file with the name as server.properties, this properties file is what we need to pass while activating any server using any .sh file
+    This server.properties is configurable means you can edit this file and change certain properties and save it and when next time you will pass this file to .sh file
+    while starting the kafka server it will have the specific effect
+    Same way there multiple properties files inside the config directory and we will use them while running certain scripts
+
+// 4th we will run some commands now, Now that we have the kafka installed in our machine we need the dependent things which we need for Kafka to run
+    sudo apt install default-jdk (This is to install Java as Kafka is written in Java and Scala we need Java Runtime engine to be there installed)
+
+// 5th we will run commands to start Kafka as we have installed all the dependency that is required for Kafka
+    cd kafka-directory (go inside the directory of kafka means the unzipped directory)
+    screen (create a screen as we need some of the things to run in background)
+    bin/zookeeper-server-start.sh config/zookeeper.properties (This will start the zookeeper server with the zookeeper properties file)
+    click by holding sequentially ctl + A + D (Detach the screen and get out of it)
+
+// 6th Now we need to change some properties of a file inside the config directory as I mentioned previously, This is required as the current Kafka server
+    will be visible to producer and consumer.
+    cd kafka-directory/config/
+    nano server.properties (We will endit this file)
+    change the adverse listener from commented to uncommented and then change the ip from the default one to localhost with the port as 9092, eg. localhost:9092
+    ctl + x (Exit from the nano editor) 
+    y (Prompted for save changes we will click y for saving the changes)
+    Enter (Now click enter to finally exit out of Nano)
+
+// 7th Now we will start Kafka server
+    cd kafka-directiory
+    screen
+    bin/kafka-server-start.sh config/server.properties
+    click by holding sequentially ctl + A + D (Detach the screen and get out of screen)
+
+// 8th Now we will create a Kafka topic
+    cd kafka-directory
+    bin/kafka-topics.sh --create --topic <<topicName>> --bootstrap-server <<localhost:9092>> --replication-factor 1 --partitions 1
+    (In the above we need to replace the topic name with our topic name whatever we want it to be, then we need to add the bootstrap server as the same ip with port which we 
+     added in the server config file earlier.)  
+
+// 9th Now we will create a producer
+    cd kafka-directory
+    screen
+    bin/kafka-console-producer.sh --topic <<topicName>> --bootstrap-server <<localhost:9092>>
+    (After this the producer will be created, here on the screen you write some text and then press enter, these messages will be visible when we will have started our consumer 
+        which will point to the same topic)
+    ctl + A + D
+
+// 10th Now we will create a consumer
+    cd kafka-directory
+    screen
+    bin/kafka-console-consumer.sh --topic <<topicName>> --bootstrap-server <<localhost:9092>> 
+    (Now we have created the consumer here we will be able to see all the messages which we will produce)
+    ctl + A + D (Exit from the screen when we are done with testing)
+
+Note:- All the screens will have an id after you exit from the screen it will be visible on the monitor, we can use the below script to again re-attach to that screen
+       screen -r screen_number/name
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
